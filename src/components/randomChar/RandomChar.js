@@ -7,10 +7,6 @@ import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
 
 class RandomChar extends Component {
-    constructor(props) {
-        super(props);
-        this.updateChar();
-    }
     state = { 
         char: {},
         loading: true,
@@ -18,6 +14,15 @@ class RandomChar extends Component {
     }
 
     marvelService = new MarvelService();
+
+    componentDidMount() {
+        this.updateChar();
+        // this.timerID = setInterval(this.updateChar, 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+    }
 
     onCharloaded = (char) => {
         this.setState({
@@ -40,7 +45,6 @@ class RandomChar extends Component {
             .then(this.onCharloaded)
             .catch(this.onError)
     }
-
 
     render () {
         const {char, loading, error} = this.state;
@@ -74,13 +78,24 @@ class RandomChar extends Component {
 const View = ({char}) => {
     const {name, description, thumbnail, homepage, wiki} = char;
 
+    const cutDescription = description => {
+        if (description.length > 150) {
+            return description.slice(0, 150) + '...'
+        }
+        return description
+    }
+
     return (
                 <div className="randomchar__block">
                     <img src={thumbnail} alt="Random character" className="randomchar__img"/>
                     <div className="randomchar__info">
                         <p className="randomchar__name">{name}</p>
-                        <p className="randomchar__descr">
-                        {description}                        </p>
+                        {description ? (
+                            <p className="randomchar__descr">{cutDescription(description)}</p>
+                        ) : (
+                            <p>Oops! description not found</p>
+                        )} 
+                       
                         <div className="randomchar__btns">
                             <a href={homepage} className="button button__main">
                                 <div className="inner">homepage</div>
