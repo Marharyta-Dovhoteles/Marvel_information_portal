@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts build",
+    "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -39,4 +39,7 @@
   "devDependencies": {
     "sass": "^1.38.0"
   }
+
+
 }
+
